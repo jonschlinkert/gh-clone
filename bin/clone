@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const log = require('verbalize');
+const relative = require('relative');
+const argv = require('minimist')(process.argv.slice(2));
+
+/**
+ * clone
+ */
+
+const clone = require('../');
+
+
+/**
+ * verbalize `runner`
+ */
+
+log.runner = 'clone-repo';
+
+/**
+ * Args
+ */
+
+// Optionally run with verbose logging
+log.mode.verbose = argv.v || argv.verbose || false;
+
+var repo    = argv._[0] || argv.r || argv.repo,
+    dest    = argv._[1] || argv.d || argv.dest,
+    branch  = argv._[2] || argv.b || argv.branch;
+
+
+/**
+ * Start
+ */
+
+log.writeln();
+
+
+if (!repo) {
+  log.error('Please provide a source file, either as a first argument or with \'-r\'');
+}
+
+log.run('repo', repo);
+
+if (!dest) {
+  dest = relative(process.cwd(), repo.split('/')[1]);
+}
+
+log.run('dest', dest + '/');
+
+if (branch) {
+  log.run('branch', branch);
+}
+
+
+/**
+ * Clone the repo
+ */
+
+
+clone(repo, dest, function(err) {
+  if(err) {
+    log.error(err);
+  }
+
+  /**
+   * Success message.
+   */
+
+  log.success('  ' + log.runner + ' [done]');
+  log.writeln();
+});
+
