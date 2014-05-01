@@ -1,7 +1,7 @@
 {
   "name": "gh-clone",
   "description": "git clone a repo with only username/repo.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "https://github.com/jonschlinkert/gh-clone",
   "author": {
     "name": "Jon Schlinkert",
@@ -22,30 +22,26 @@
   ],
   "preferGlobal": true,
   "keywords": [
-    "docs",
-    "documentation",
-    "generate",
-    "generator",
-    "markdown",
-    "templates",
-    "verb"
+    "clone",
+    "git",
+    "github"
   ],
   "bin": {
-    "clone": "./bin/clone"
+    "clone": "./bin/clone.js"
   },
   "engines": {
     "node": ">=0.8"
   },
   "scripts": {
-    "test": "mocha -R test"
+    "test": "mocha -R spec"
   },
   "devDependencies": {
     "verb": "~0.2.0"
   },
   "dependencies": {
-    "verbalize": "~0.1.1",
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
-    "relative": "~0.1.2"
+    "relative": "~0.1.4",
+    "verbalize": "~0.1.2"
   }
 }

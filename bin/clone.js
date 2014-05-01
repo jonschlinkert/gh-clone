@@ -1,26 +1,11 @@
 #!/usr/bin/env node
 
-const path = require('path');
 const log = require('verbalize');
 const relative = require('relative');
 const argv = require('minimist')(process.argv.slice(2));
-
-/**
- * clone
- */
-
-const clone = require('../');
-
-
-/**
- * verbalize `runner`
- */
+const spawn = require('../lib/spawn');
 
 log.runner = 'clone-repo';
-
-/**
- * Args
- */
 
 // Optionally run with verbose logging
 log.mode.verbose = argv.v || argv.verbose || false;
@@ -30,12 +15,8 @@ var repo    = argv._[0] || argv.r || argv.repo,
     branch  = argv._[2] || argv.b || argv.branch;
 
 
-/**
- * Start
- */
-
+// Empty line
 log.writeln();
-
 
 if (!repo) {
   log.error('Please provide a source file, either as a first argument or with \'-r\'');
@@ -54,21 +35,16 @@ if (branch) {
 }
 
 
-/**
- * Clone the repo
- */
+var clone = function(repository, destination, branch) {
+  var url = 'https://github.com/' + repository + '.git';
+  var command = 'git clone ' + url + ' ' + destination;
 
-
-clone(repo, dest, function(err) {
-  if(err) {
-    log.error(err);
+  if(branch) {
+    command = ['git clone -b', branch, ' ', url, ' ', destination];
   }
 
-  /**
-   * Success message.
-   */
+  return command;
+};
 
-  log.success('  ' + log.runner + ' [done]');
-  log.writeln();
-});
-
+log.writeln();
+spawn([clone(repo, dest, branch)]);
