@@ -12,7 +12,8 @@ log.mode.verbose = argv.v || argv.verbose || false;
 
 var repo    = argv._[0] || argv.r || argv.repo,
     dest    = argv._[1] || argv.d || argv.dest,
-    branch  = argv._[2] || argv.b || argv.branch;
+    branch  = argv._[2] || argv.b || argv.branch,
+    ssh     = argv._[3] || argv.s || argv.ssh;
 
 
 // Empty line
@@ -35,16 +36,17 @@ if (branch) {
 }
 
 
-var clone = function(repository, destination, branch) {
-  var url = 'https://github.com/' + repository + '.git';
-  var command = 'git clone ' + url + ' ' + destination;
+var clone = function(ssh, repository, destination, branch) {
+  var url = ssh ? 'git@github.com:' : 'https://github.com/'
+  url = url + repository + '.git';
 
-  if(branch) {
-    command = ['git clone -b', branch, ' ', url, ' ', destination];
-  }
+  var command = ['clone', url];
+
+  if (destination) {command.push(destination)}
+  if (branch) {command.concat(['-b', branch])}
 
   return command;
 };
 
 log.writeln();
-spawn([clone(repo, dest, branch)]);
+spawn(clone(ssh, repo, dest, branch));
