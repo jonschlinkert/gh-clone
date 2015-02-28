@@ -2,21 +2,49 @@
 
 > git clone a repo with only username/repo.
 
-## Install with [npm](npmjs.org)
+## Install globally with [npm](npmjs.org):
 
 ```bash
-npm i gh-clone --save
+npm i -g gh-clone
 ```
 
 ## Usage
 
-```js
-var ghClone = require('gh-clone');
+Let's say you want to clone [micromatch](https://github.com/jonschlinker/micromatch):
+
+```bash
+$ clone jonschlinker/micromatch
 ```
 
-## API
+### flags
 
+* `-r`|`--repo`: the repository to clone
+* `-b`|`--brach`: the branch to clone
+* `-d`|`--dest`: the local destination
 
+**Example: branch**
+
+Flags can be used in any order. If you want the `dev` branch of micromatch (when one exists):
+
+```bash
+$ clone jonschlinker/micromatch -b dev
+```
+
+**Example: destination**
+
+If you want to save to the `foo` directory
+
+```bash
+$ clone jonschlinker/micromatch -d foo
+```
+
+**Example: branch and destination**
+
+If you want to save the `dev` branch to the `foo` directory
+
+```bash
+$ clone jonschlinker/micromatch -b dev -d foo
+```
 
 ## Run tests
 
