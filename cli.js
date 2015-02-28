@@ -6,15 +6,6 @@ var relative = require('relative');
 var argv = require('minimist')(process.argv.slice(2));
 var cmd = require('spawn-commands');
 
-function format(msg) {
-  return chalk.gray('gh-clone ') + msg;
-}
-
-function inform(type, msg, pad) {
-  var prefix = format('[' + type + ']' + (pad || '\t') + '· ');
-  return console.log(prefix + chalk.bold(msg) + ' ' + symbol.success);
-}
-
 // args
 var repo    = argv._[0] || argv.r || argv.repo;
 var dest    = argv._[1] || argv.d || argv.dest;
@@ -72,3 +63,15 @@ cmd(launch({repo: repo, dest: dest, branch: branch }), function (err) {
   }
 });
 
+/**
+ * Formatting
+ */
+
+function format(msg) {
+  return chalk.gray('gh-clone ') + msg;
+}
+
+function inform(type, msg, pad) {
+  var prefix = format('[' + type + ']' + (pad || '\t') + '· ');
+  return console.log(prefix + chalk.bold(msg) + ' ' + symbol.success);
+}
