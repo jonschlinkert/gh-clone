@@ -1,7 +1,7 @@
 {
   "name": "gh-clone",
   "description": "git clone a repo with only username/repo.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/jonschlinkert/gh-clone",
   "author": {
     "name": "Jon Schlinkert",
@@ -19,13 +19,12 @@
     "url": "https://github.com/jonschlinkert/gh-clone/blob/master/LICENSE"
   },
   "files": [
-    "index.js",
     "cli.js"
   ],
   "main": "index.js",
   "preferGlobal": true,
   "bin": {
-    "clone": "./bin/clone.js"
+    "clone": "./cli.js"
   },
   "engines": {
     "node": ">=0.8"

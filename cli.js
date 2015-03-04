@@ -15,7 +15,7 @@ var branch  = argv._[2] || argv.b || argv.branch;
 console.log();
 
 if (!repo) {
-  console.error(chalk.red('Please provide a source file, either as a first argument or with \'-r\''));
+  console.error(chalk.red('Please provide a `repo` either as a first argument or with `-r`'));
 }
 
 inform('cloned', repo);
