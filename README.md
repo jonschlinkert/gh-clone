@@ -10,10 +10,10 @@ npm i -g gh-clone
 
 ## Usage
 
-Let's say you want to clone [micromatch](https://github.com/jonschlinker/micromatch):
+Let's say you want to clone [micromatch](https://github.com/jonschlinkert/micromatch):
 
 ```bash
-$ clone jonschlinker/micromatch <commands>
+$ clone jonschlinkert/micromatch <commands>
 ```
 
 ### flags
@@ -27,7 +27,7 @@ $ clone jonschlinker/micromatch <commands>
 Flags can be used in any order. If you want the `dev` branch of micromatch (when one exists):
 
 ```bash
-$ clone jonschlinker/micromatch -b dev
+$ clone jonschlinkert/micromatch -b dev
 ```
 
 **Example: destination**
@@ -35,7 +35,7 @@ $ clone jonschlinker/micromatch -b dev
 If you want to save to the `foo` directory
 
 ```bash
-$ clone jonschlinker/micromatch -d foo
+$ clone jonschlinkert/micromatch -d foo
 ```
 
 **Example: branch and destination**
@@ -43,7 +43,7 @@ $ clone jonschlinker/micromatch -d foo
 If you want to save the `dev` branch to the `foo` directory
 
 ```bash
-$ clone jonschlinker/micromatch -b dev -d foo
+$ clone jonschlinkert/micromatch -b dev -d foo
 ```
 
 ## Run tests
