@@ -19,7 +19,7 @@ $ clone jonschlinkert/micromatch <commands>
 ### flags
 
 * `-r`|`--repo`: the repository to clone
-* `-b`|`--brach`: the branch to clone
+* `-b`|`--branch`: the branch to clone
 * `-d`|`--dest`: the local destination
 
 **Example: branch**
