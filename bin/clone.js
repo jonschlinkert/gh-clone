@@ -25,10 +25,6 @@ if (!repo) {
   console.error(chalk.red('Please provide a `repo` either as a first argument or with `-r`'));
 }
 
-if (!dest) {
-  dest = relative(process.cwd(), repo.split('/')[1]);
-}
-
 log('cloned', repo);
 
 if (branch) {
