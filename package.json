@@ -3,17 +3,15 @@
   "description": "git clone a repo with only username/repo.",
   "version": "0.2.1",
   "homepage": "https://github.com/jonschlinkert/gh-clone",
-  "author": "Jon Schlinkert (http://github.com/jonschlinkert/)",
+  "author": "Jon Schlinkert (http://github.com/jonschlinkert)",
   "repository": "jonschlinkert/gh-clone",
   "bugs": {
     "url": "https://github.com/jonschlinkert/gh-clone/issues"
   },
   "license": "MIT",
   "files": [
-    "cli.js",
-    "index.js"
+    "cli.js"
   ],
-  "main": "index.js",
   "engines": {
     "node": ">=0.8"
   },
@@ -22,10 +20,12 @@
   },
   "preferGlobal": true,
   "bin": {
-    "clone": "./cli.js"
+    "clone": "bin/clone.js"
   },
   "dependencies": {
     "chalk": "^1.1.1",
+    "extend-shallow": "^2.0.1",
+    "get-pkg": "^0.1.0",
     "minimist": "^1.2.0",
     "relative": "^3.0.1",
     "spawn-commands": "^0.3.1",
@@ -40,7 +40,14 @@
   ],
   "verb": {
     "related": {
-      "list": []
+      "list": [
+        "github-base",
+        "get-first-commit",
+        "first-commit-date"
+      ]
     }
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4"
   }
 }
