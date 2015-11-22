@@ -1,4 +1,4 @@
-# gh-clone [![NPM version](https://badge.fury.io/js/gh-clone.svg)](http://badge.fury.io/js/gh-clone)
+# gh-clone [![NPM version](https://badge.fury.io/js/gh-clone.svg)](http://badge.fury.io/js/gh-clone)  [![Build Status](https://travis-ci.org/jonschlinkert/gh-clone.svg)](https://travis-ci.org/jonschlinkert/gh-clone)
 
 > git clone a repo with only username/repo.
 
@@ -15,13 +15,25 @@ $ npm i -g gh-clone
 Let's say you want to clone [micromatch](https://github.com/jonschlinker/micromatch):
 
 ```sh
-$ clone [owner/repo] <commands>
+$ gh-clone [owner/repo] <commands>
 ```
 
-**Example**
+### Examples
+
+**owner/repo**
+
+You can pass github owner name/repo:
 
 ```sh
-$ clone jonschlinkert/micromatch
+$ gh-clone jonschlinkert/micromatch
+```
+
+**repo**
+
+If you pass the repository name only, `gh-clone` will resolve the git url from the `package.json` hosted on npm.
+
+```sh
+$ gh-clone micromatch
 ```
 
 ### flags
@@ -35,7 +47,7 @@ $ clone jonschlinkert/micromatch
 Flags can be used in any order. If you want the `dev` branch of micromatch (when one exists):
 
 ```sh
-$ clone jonschlinker/micromatch -b dev
+$ gh-clone jonschlinker/micromatch -b dev
 ```
 
 **Example: destination**
@@ -43,7 +55,7 @@ $ clone jonschlinker/micromatch -b dev
 If you want to save to the `foo` directory
 
 ```sh
-$ clone jonschlinker/micromatch -d foo
+$ gh-clone jonschlinker/micromatch -d foo
 ```
 
 **Example: branch and destination**
@@ -51,7 +63,7 @@ $ clone jonschlinker/micromatch -d foo
 If you want to save the `dev` branch to the `foo` directory
 
 ```sh
-$ clone jonschlinker/micromatch -b dev -d foo
+$ gh-clone jonschlinker/micromatch -b dev -d foo
 ```
 
 ## Related
