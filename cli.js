@@ -32,7 +32,7 @@ if (branch) {
 
 log('to', dest + '/', '\t\t');
 
-function launch(opts) {
+function run(opts) {
   opts = opts || {};
   var res = {cmd: 'git', args: ['clone']};
   if (opts.branch) {
@@ -52,7 +52,7 @@ console.log();
 console.log(chalk.green('Cloning.'));
 console.log();
 
-cmd(launch({repo: repo, dest: dest, branch: branch}), function (err) {
+cmd(run({repo: repo, dest: dest, branch: branch}), function (err) {
   console.log();
   if (typeof err === 'number') {
     console.log(chalk.red('Cloning was unsuccessful.'));

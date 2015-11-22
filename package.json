@@ -3,48 +3,44 @@
   "description": "git clone a repo with only username/repo.",
   "version": "0.2.1",
   "homepage": "https://github.com/jonschlinkert/gh-clone",
-  "author": {
-    "name": "Jon Schlinkert",
-    "url": "http://github.com/jonschlinkert/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jonschlinkert/gh-clone.git"
-  },
+  "author": "Jon Schlinkert (http://github.com/jonschlinkert/)",
+  "repository": "jonschlinkert/gh-clone",
   "bugs": {
     "url": "https://github.com/jonschlinkert/gh-clone/issues"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/jonschlinkert/gh-clone/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "files": [
-    "cli.js"
+    "cli.js",
+    "index.js"
   ],
   "main": "index.js",
-  "preferGlobal": true,
-  "bin": {
-    "clone": "./cli.js"
-  },
   "engines": {
     "node": ">=0.8"
   },
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {
-    "chalk": "^1.0.0",
-    "log-symbols": "^1.0.2",
-    "minimist": "^1.1.0",
-    "relative": "^2.0.0",
-    "spawn-commands": "^0.1.0"
+  "preferGlobal": true,
+  "bin": {
+    "clone": "./cli.js"
   },
-  "devDependencies": {
-    "mocha": "*"
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "minimist": "^1.2.0",
+    "relative": "^3.0.1",
+    "spawn-commands": "^0.3.1",
+    "success-symbol": "^0.1.0"
   },
   "keywords": [
     "clone",
+    "download",
     "git",
-    "github"
-  ]
+    "github",
+    "repo"
+  ],
+  "verb": {
+    "related": {
+      "list": []
+    }
+  }
 }
