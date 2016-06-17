@@ -1,8 +1,16 @@
 'use strict';
 
-var relative = require('relative');
+var cmd = require('spawn-commands');
 var extend = require('extend-shallow');
 var pkg = require('get-pkg');
+var relative = require('relative');
+
+function clone(options, cb) {
+  normalize(options, function(err, config) {
+    if (err) return cb(err);
+    cmd(config, cb);
+  });
+}
 
 function normalize(options, cb) {
   var opts = extend({}, options);
@@ -44,7 +52,8 @@ function dest(repoName, res, opts) {
 }
 
 /**
- * Expose `normalize`
+ * Expose `clone`
  */
 
-module.exports = normalize;
+clone.normalize = normalize;
+module.exports = clone;

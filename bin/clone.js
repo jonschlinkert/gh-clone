@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-var chalk = require('chalk');
-var success = require('success-symbol');
-var relative = require('relative');
-var cmd = require('spawn-commands');
-var normalize = require('..');
+var clone = require('..');
+var utils = require('log-utils');
+
 var argv = require('minimist')(process.argv.slice(2), {
   alias: {
     r: 'repo',
@@ -22,19 +20,21 @@ var branch = argv._[2] || argv.branch;
 console.log();
 
 if (!repo) {
-  console.error(chalk.red('Please provide a `repo` either as a first argument or with `-r`'));
+  console.error(utils.timestamp, utils.red('Please provide a `repo` either as a first argument or with `-r`'));
 }
 
-log('cloned', repo);
+log('repo', repo);
 
 if (branch) {
   log('branch', branch);
 }
 
-log('to', dest + '/', '\t\t');
+if (dest) {
+  log('dest', dest + '/');
+}
 
 console.log();
-console.log(chalk.green('Cloning.'));
+console.log(utils.timestamp, utils.green('Cloning.'));
 console.log();
 
 /**
@@ -43,25 +43,22 @@ console.log();
 
 var options = {repo: repo, dest: dest, branch: branch};
 
-normalize(options, function(err, config) {
-  if (err) {
-    console.log(chalk.red(err.message));
+clone(options, function(err) {
+  console.log();
+  if (typeof err === 'number') {
+    console.log(utils.timestamp, utils.red('Cloning was unsuccessful.'));
+    console.log();
     process.exit(1);
   }
 
-  cmd(config, function(err) {
-    console.log();
+  if (err) {
+    console.log(utils.timestamp, utils.red(err.message));
+    process.exit(1);
+  }
 
-    if (typeof err === 'number') {
-      console.log(chalk.red('Cloning was unsuccessful.'));
-      console.log();
-      process.exit(1);
-    }
-
-    console.log(chalk.green('Done.'));
-    console.log();
-    process.exit(0);
-  });
+  console.log(utils.timestamp, utils.green('Done.'));
+  console.log();
+  process.exit(0);
 });
 
 /**
@@ -69,10 +66,10 @@ normalize(options, function(err, config) {
  */
 
 function format(msg) {
-  return chalk.gray('gh-clone') + ' ' + msg;
+  return utils.gray('gh-clone') + ' ' + msg;
 }
 
 function log(type, msg, pad) {
   var prefix = format('[' + type + ']' + (pad || '\t') + '· ');
-  return console.log(prefix + chalk.bold(msg) + ' ' + success);
+  return console.log(utils.timestamp, prefix + utils.bold(msg) + ' ' + utils.green(utils.symbol.success));
 }
