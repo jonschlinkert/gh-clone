@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "delete": "^0.3.2",
+    "gulp-format-md": "^0.1.9",
     "mocha": "*"
   },
   "keywords": [
@@ -45,10 +46,24 @@
   "verb": {
     "related": {
       "list": [
-        "github-base",
+        "first-commit-date",
         "get-first-commit",
-        "first-commit-date"
+        "github-base"
       ]
-    }
+    },
+    "toc": false,
+    "layout": "global",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "lint": {
+      "reflinks": true
+    },
+    "reflinks": [
+      "verb"
+    ]
   }
 }
