@@ -5,12 +5,46 @@ var extend = require('extend-shallow');
 var pkg = require('get-pkg');
 var relative = require('relative');
 
+/**
+ * Clone a repo with the given options:
+ *
+ * ```js
+ * clone({repo: 'jonschlinkert/micromatch'}, function(err) {
+ *   if (err) return console.error(err);
+ * });
+ * ```
+ * @param {Object} `options` Options
+ * @param {String} `repo` Repository to clone.
+ * @param {String} `branch` Branch on repository to clone.
+ * @param {String} `dest` Destination folder to clone to.
+ * @param {Function} `cb` Callback
+ * @api public
+ */
+
 function clone(options, cb) {
   normalize(options, function(err, config) {
     if (err) return cb(err);
     cmd(config, cb);
   });
 }
+
+/**
+ * Normalizes options into a configuration object suitable to pass to [spawn-commands][]
+ *
+ * ```js
+ * clone.normalize({repo: 'jonschlinkert/micromatch'}, function(err, config) {
+ *   if (err) return console.error(err);
+ *   console.log(config);
+ * });
+ * ```
+ * @name .clone.normalize
+ * @param {Object} `options` Options
+ * @param {String} `repo` Repository to clone.
+ * @param {String} `branch` Branch on repository to clone.
+ * @param {String} `dest` Destination folder to clone to.
+ * @param {Function} `cb` Callback
+ * @api public
+ */
 
 function normalize(options, cb) {
   var opts = extend({}, options);
@@ -40,6 +74,10 @@ function normalize(options, cb) {
   res = dest(repoName, res, opts);
   cb(null, [res]);
 }
+
+/**
+ * Calculates the destination folder.
+ */
 
 function dest(repoName, res, opts) {
   if (opts.dest) {
