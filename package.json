@@ -24,15 +24,15 @@
     "gh-clone": "./bin/clone.js"
   },
   "dependencies": {
-    "chalk": "^1.1.1",
     "extend-shallow": "^2.0.1",
     "get-pkg": "^0.1.0",
+    "log-utils": "^0.1.4",
     "minimist": "^1.2.0",
     "relative": "^3.0.1",
-    "spawn-commands": "^0.3.1",
-    "success-symbol": "^0.1.0"
+    "spawn-commands": "^0.3.1"
   },
   "devDependencies": {
+    "delete": "^0.3.2",
     "mocha": "*"
   },
   "keywords": [
