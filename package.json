@@ -63,8 +63,7 @@
       "reflinks": true
     },
     "reflinks": [
-      "verb",
-      "spawn-commands"
+      "verb"
     ]
   }
 }

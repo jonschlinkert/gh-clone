@@ -29,7 +29,7 @@ function clone(options, cb) {
 }
 
 /**
- * Normalizes options into a configuration object suitable to pass to [spawn-commands][]
+ * Normalizes options into a configuration object.
  *
  * ```js
  * clone.normalize({repo: 'jonschlinkert/micromatch'}, function(err, config) {
