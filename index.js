@@ -102,7 +102,7 @@ function cmd(config, cb) {
     throw new Error('expected "config" to be an object');
   }
 
-  var spawned = spawn(config.cmd, config.args);
+  var spawned = spawn(config.cmd, config.args, { stdio: 'inherit' });
   spawned.on('error', cb);
   spawned.on('close', function(code) {
     if (typeof code === 'number' && code === 0) {
