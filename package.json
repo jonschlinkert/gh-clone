@@ -24,12 +24,12 @@
     "gh-clone": "./bin/clone.js"
   },
   "dependencies": {
+    "cross-spawn": "^4.0.0",
     "extend-shallow": "^2.0.1",
     "get-pkg": "^0.3.0",
     "log-utils": "^0.1.4",
     "minimist": "^1.2.0",
-    "relative": "^3.0.2",
-    "spawn-commands": "^0.3.1"
+    "relative": "^3.0.2"
   },
   "devDependencies": {
     "delete": "^0.3.2",

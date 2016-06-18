@@ -1,6 +1,6 @@
 'use strict';
 
-var cmd = require('spawn-commands');
+var spawn = require('cross-spawn');
 var extend = require('extend-shallow');
 var pkg = require('get-pkg');
 var relative = require('relative');
@@ -87,6 +87,31 @@ function dest(repoName, res, opts) {
   var dest = relative(process.cwd(), repoName);
   res.args.push(dest);
   return res;
+}
+
+/**
+ * Run the command from the normalized config.
+ */
+
+function cmd(config, cb) {
+  if (Array.isArray(config)) {
+    config = config[0];
+  }
+
+  if (typeof config !== 'object') {
+    throw new Error('expected "config" to be an object');
+  }
+
+  var spawned = spawn(config.cmd, config.args);
+  spawned.on('error', cb);
+  spawned.on('close', function(code) {
+    if (typeof code === 'number' && code === 0) {
+      return cb();
+    } else if (code) {
+      return cb(code);
+    }
+    cb();
+  });
 }
 
 /**
