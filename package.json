@@ -1,7 +1,7 @@
 {
   "name": "gh-clone",
   "description": "git clone a repo with only username/repo, or if it's an NPM package you can use just the name of the project.",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "homepage": "https://github.com/jonschlinkert/gh-clone",
   "author": "Jon Schlinkert (http://github.com/jonschlinkert)",
   "repository": "jonschlinkert/gh-clone",
