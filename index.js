@@ -3,7 +3,7 @@
 var spawn = require('cross-spawn');
 var extend = require('extend-shallow');
 var relative = require('relative');
-var pkg = require('get-pkg');
+var repo = require('get-repository-url');
 
 /**
  * Clone a repo with the given options:
@@ -22,8 +22,11 @@ var pkg = require('get-pkg');
  */
 
 function clone(options, cb) {
-  normalize(options, function(err, config) {
-    if (err) return cb(err);
+  clone.normalize(options, function(err, config) {
+    if (err) {
+      cb(err);
+      return;
+    }
     cmd(config, cb);
   });
 }
@@ -37,16 +40,14 @@ function clone(options, cb) {
  *   console.log(config);
  * });
  * ```
- * @name .clone.normalize
  * @param {Object} `options` Options
  * @param {String} `repo` Repository to clone.
  * @param {String} `branch` Branch on repository to clone.
  * @param {String} `dest` Destination folder to clone to.
  * @param {Function} `cb` Callback
- * @api public
  */
 
-function normalize(options, cb) {
+clone.normalize = function normalize(options, cb) {
   var opts = extend({}, options);
   var res = {cmd: 'git', args: ['clone']};
 
@@ -55,24 +56,27 @@ function normalize(options, cb) {
   }
 
   if (typeof opts.repo === 'undefined') {
-    return cb(new Error('expected `repo` to be a string. Example: `jonschlinkert/generate`'));
+    cb(new Error('expected `repo` to be a string. Example: `owner/name`'));
+    return;
   }
 
   if (!/\//.test(opts.repo)) {
-    return pkg(opts.repo, function(err, pkg) {
+    return repo(opts.repo, function(err, url) {
       if (err) return cb(err);
-
-      var url = pkg.repository.url.split('git+https').join('git');
-      res.args.push(url);
+      res.args.push(url + '.git');
       res = dest(opts.repo, res, opts);
       cb(null, [res]);
     });
   }
 
-  var repoName = opts.repo.split('/')[1];
   res.args.push('https://github.com/' + opts.repo + '.git');
-  res = dest(repoName, res, opts);
-  cb(null, [res]);
+  var segs = opts.repo.split('/');
+  if (segs.length !== 2) {
+    cb(new Error('expected options.repo to be in the format of `owner/name`'));
+    return;
+  }
+
+  cb(null, [dest(segs[1], res, opts)]);
 }
 
 /**
@@ -80,12 +84,7 @@ function normalize(options, cb) {
  */
 
 function dest(repoName, res, opts) {
-  if (opts.dest) {
-    res.args.push(opts.dest);
-    return res;
-  }
-  var dest = relative(process.cwd(), repoName);
-  res.args.push(dest);
+  res.args.push(opts.dest || relative(process.cwd(), repoName));
   return res;
 }
 
@@ -107,21 +106,19 @@ function cmd(config, cb) {
     return;
   }
 
-  var spawned = spawn(config.cmd, config.args, { stdio: 'inherit' });
-  spawned.on('error', cb);
-  spawned.on('close', function(code) {
-    if (typeof code === 'number' && code === 0) {
-      return cb();
-    } else if (code) {
-      return cb(code);
-    }
-    cb();
-  });
+  spawn(config.cmd, config.args, { stdio: 'inherit' })
+    .on('error', cb)
+    .on('close', function(code) {
+      if (code && typeof code !== 'number' && code !== 0) {
+        cb(code);
+      } else {
+        cb();
+      }
+    });
 }
 
 /**
  * Expose `clone`
  */
 
-clone.normalize = normalize;
 module.exports = clone;

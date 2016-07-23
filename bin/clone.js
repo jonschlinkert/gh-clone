@@ -3,7 +3,7 @@
 var clone = require('..');
 var utils = require('log-utils');
 
-var argv = require('minimist')(process.argv.slice(2), {
+var argv = require('yargs-parser')(process.argv.slice(2), {
   alias: {
     r: 'repo',
     d: 'dest',
@@ -24,15 +24,8 @@ if (!repo) {
 }
 
 log('repo', repo);
-
-if (branch) {
-  log('branch', branch);
-}
-
-if (dest) {
-  log('dest', dest + '/');
-}
-
+if (branch) log('branch', branch);
+if (dest) log('dest', dest + '/');
 console.log();
 console.log(utils.timestamp, utils.green('Cloning.'));
 console.log();

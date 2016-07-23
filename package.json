@@ -1,6 +1,6 @@
 {
   "name": "gh-clone",
-  "description": "git clone a repo with only username/repo.",
+  "description": "git clone a repo with only username/repo, or if it's an NPM package you can use just the name of the project.",
   "version": "0.4.1",
   "homepage": "https://github.com/jonschlinkert/gh-clone",
   "author": "Jon Schlinkert (http://github.com/jonschlinkert)",
@@ -29,11 +29,10 @@
   "dependencies": {
     "cross-spawn": "^4.0.0",
     "extend-shallow": "^2.0.1",
-    "get-pkg": "^0.3.0",
     "get-repository-url": "^0.1.0",
     "log-utils": "^0.2.1",
-    "minimist": "^1.2.0",
-    "relative": "^3.0.2"
+    "relative": "^3.0.2",
+    "yargs-parser": "^2.4.1"
   },
   "devDependencies": {
     "delete": "^0.3.2",
