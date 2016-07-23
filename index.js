@@ -2,8 +2,8 @@
 
 var spawn = require('cross-spawn');
 var extend = require('extend-shallow');
-var pkg = require('get-pkg');
 var relative = require('relative');
+var pkg = require('get-pkg');
 
 /**
  * Clone a repo with the given options:
@@ -98,8 +98,13 @@ function cmd(config, cb) {
     config = config[0];
   }
 
+  if (typeof cb !== 'function') {
+    throw new TypeError('expected callback to be a function');
+  }
+
   if (typeof config !== 'object') {
-    throw new Error('expected "config" to be an object');
+    cb(new Error('expected "config" to be an object'));
+    return;
   }
 
   var spawned = spawn(config.cmd, config.args, { stdio: 'inherit' });
