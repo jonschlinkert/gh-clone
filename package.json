@@ -10,24 +10,28 @@
   },
   "license": "MIT",
   "files": [
+    "bin",
     "index.js",
-    "bin/"
+    "LICENSE",
+    "README.md"
   ],
+  "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "gh-clone": "./bin/clone.js"
+  },
   "engines": {
     "node": ">=0.8"
   },
   "scripts": {
     "test": "mocha"
   },
-  "preferGlobal": true,
-  "bin": {
-    "gh-clone": "./bin/clone.js"
-  },
   "dependencies": {
     "cross-spawn": "^4.0.0",
     "extend-shallow": "^2.0.1",
     "get-pkg": "^0.3.0",
-    "log-utils": "^0.1.4",
+    "get-repository-url": "^0.1.0",
+    "log-utils": "^0.2.1",
     "minimist": "^1.2.0",
     "relative": "^3.0.2"
   },
@@ -39,6 +43,7 @@
   "keywords": [
     "clone",
     "download",
+    "gh",
     "git",
     "github",
     "repo"
