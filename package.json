@@ -4,6 +4,12 @@
   "version": "0.5.0",
   "homepage": "https://github.com/jonschlinkert/gh-clone",
   "author": "Jon Schlinkert (http://github.com/jonschlinkert)",
+  "contributors": [
+    "Brian Woodward (https://twitter.com/doowb)",
+    "John Otander (http://johnotander.com)",
+    "Jon Schlinkert (http://twitter.com/jonschlinkert)",
+    "Matheus Alves (https://github.com/theuves)"
+  ],
   "repository": "jonschlinkert/gh-clone",
   "bugs": {
     "url": "https://github.com/jonschlinkert/gh-clone/issues"
@@ -12,13 +18,13 @@
   "files": [
     "bin",
     "index.js",
-    "LICENSE",
-    "README.md"
+    "lib"
   ],
   "main": "index.js",
   "preferGlobal": true,
   "bin": {
-    "gh-clone": "./bin/clone.js"
+    "gh-clone": "./bin/clone.js",
+    "clone": "./bin/clone.js"
   },
   "engines": {
     "node": ">=0.8"
@@ -27,17 +33,20 @@
     "test": "mocha"
   },
   "dependencies": {
-    "cross-spawn": "^4.0.0",
-    "extend-shallow": "^2.0.1",
-    "get-repository-url": "^0.1.0",
-    "log-utils": "^0.2.1",
-    "relative": "^3.0.2",
-    "yargs-parser": "^2.4.1"
+    "any-shell-escape": "^0.1.1",
+    "cross-spawn": "^5.1.0",
+    "each-series-async": "^1.0.1",
+    "get-repository-url": "^0.1.1",
+    "is-git-url": "^1.0.0",
+    "isobject": "^3.0.1",
+    "log-ok": "^0.1.1",
+    "minimist": "^1.2.0",
+    "once": "^1.4.0"
   },
   "devDependencies": {
-    "delete": "^0.3.2",
-    "gulp-format-md": "^0.1.9",
-    "mocha": "^2.5.3"
+    "mocha": "^3.5.3",
+    "delete": "^1.1.0",
+    "gulp-format-md": "^1.0.0"
   },
   "keywords": [
     "clone",
@@ -48,13 +57,6 @@
     "repo"
   ],
   "verb": {
-    "related": {
-      "list": [
-        "first-commit-date",
-        "get-first-commit",
-        "github-base"
-      ]
-    },
     "toc": false,
     "layout": "global",
     "tasks": [
@@ -63,11 +65,28 @@
     "plugins": [
       "gulp-format-md"
     ],
+    "related": {
+      "list": [
+        "first-commit-date",
+        "get-first-commit",
+        "github-base"
+      ]
+    },
     "lint": {
       "reflinks": true
     },
     "reflinks": [
       "verb"
     ]
+  },
+  "lintDeps": {
+    "devDependencies": {
+      "files": {
+        "patterns": [
+          "exec.js",
+          "spawn.js"
+        ]
+      }
+    }
   }
 }

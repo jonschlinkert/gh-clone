@@ -1,120 +1,120 @@
 'use strict';
 
-var spawn = require('cross-spawn');
-var extend = require('extend-shallow');
-var relative = require('relative');
-var repo = require('get-repository-url');
+var each = require('each-series-async');
+var isObject = require('isobject');
+var getArgs = require('./lib/args');
+var spawn = require('./lib/spawn');
 
 /**
- * Clone a repo with the given options:
+ * Clone one or more repositories with the given options.
  *
  * ```js
- * clone({repo: 'jonschlinkert/micromatch'}, function(err) {
- *   if (err) return console.error(err);
+ * var clone = require('gh-clone');
+ * clone('kind-of', function(err) {
+ *   if (err) console.error(err);
  * });
+ *
+ * // or
+ * clone(['isobject', 'kind-of'])
+ *   .then(function() {
+ *     // do stuff
+ *   })
+ *   .catch(console.error)
  * ```
- * @param {Object} `options` Options
- * @param {String} `repo` Repository to clone.
- * @param {String} `branch` Branch on repository to clone.
- * @param {String} `dest` Destination folder to clone to.
- * @param {Function} `cb` Callback
+ * @param {String|Array} `repos`
+ * @param {Object} `options`
+ * @param {Function} `callback` Optional, returns a promise if the callback is not passed.
+ * @return {Promise} if a callback is not passed.
  * @api public
  */
 
-function clone(options, cb) {
-  clone.normalize(options, function(err, config) {
-    if (err) {
-      cb(err);
-      return;
-    }
-    cmd(config, cb);
-  });
-}
-
-/**
- * Normalizes options into a configuration object.
- *
- * ```js
- * clone.normalize({repo: 'jonschlinkert/micromatch'}, function(err, config) {
- *   if (err) return console.error(err);
- *   console.log(config);
- * });
- * ```
- * @param {Object} `options` Options
- * @param {String} `repo` Repository to clone.
- * @param {String} `branch` Branch on repository to clone.
- * @param {String} `dest` Destination folder to clone to.
- * @param {Function} `cb` Callback
- */
-
-clone.normalize = function normalize(options, cb) {
-  var opts = extend({}, options);
-  var res = {cmd: 'git', args: ['clone']};
-
-  if (opts.branch) {
-    res.args.push('-b', opts.branch);
+function clone(repos, options, cb) {
+  if (isObject(repos)) {
+    cb = options;
+    options = repos;
+    repos = options.repos || options.repo;
   }
 
-  if (typeof opts.repo === 'undefined') {
-    cb(new Error('expected `repo` to be a string. Example: `owner/name`'));
-    return;
+  if (typeof options === 'function') {
+    cb = options;
+    options = null;
   }
 
-  if (!/\//.test(opts.repo)) {
-    return repo(opts.repo, function(err, url) {
-      if (err) return cb(err);
-      res.args.push(url + '.git');
-      res = dest(opts.repo, res, opts);
-      cb(null, [res]);
-    });
-  }
-
-  res.args.push('https://github.com/' + opts.repo + '.git');
-  var segs = opts.repo.split('/');
-  if (segs.length !== 2) {
-    cb(new Error('expected options.repo to be in the format of `owner/name`'));
-    return;
-  }
-
-  cb(null, [dest(segs[1], res, opts)]);
-}
-
-/**
- * Calculates the destination folder.
- */
-
-function dest(repoName, res, opts) {
-  res.args.push(opts.dest || relative(process.cwd(), repoName));
-  return res;
-}
-
-/**
- * Run the command from the normalized config.
- */
-
-function cmd(config, cb) {
-  if (Array.isArray(config)) {
-    config = config[0];
-  }
+  var opts = Object.assign({repos: repos}, options);
 
   if (typeof cb !== 'function') {
-    throw new TypeError('expected callback to be a function');
+    return clone.promise(repos, opts);
   }
 
-  if (typeof config !== 'object') {
-    cb(new Error('expected "config" to be an object'));
-    return;
-  }
+  each(arrayify(repos), function(repo, next) {
+    cloneRepo(repo, opts)
+      .then(function(args) {
+        setImmediate(function() {
+          next(null, ...args);
+        });
+      })
+      .catch(next);
+  }, cb);
+}
 
-  spawn(config.cmd, config.args, { stdio: 'inherit' })
-    .on('error', cb)
-    .on('close', function(code) {
-      if (code && typeof code !== 'number' && code !== 0) {
-        cb(code);
+/**
+ * Called by the main export when a callback is not passed.
+ *
+ * ```js
+ * clone.promise(['isobject', 'kind-of'])
+ *   .then(function() {
+ *     // do stuff
+ *   })
+ *   .catch(console.error)
+ * ```
+ * @param {String|Array} `repos`
+ * @param {Object} `options`
+ * @return {Promise}
+ * @api public
+ */
+
+clone.promise = function(repos, options) {
+  return new Promise(function(resolve, reject) {
+    each(arrayify(repos), function(repo, next) {
+      cloneRepo(repo, options)
+        .then(function(args) {
+          setImmediate(function() {
+            next(null, ...args);
+          });
+        })
+        .catch(next);
+    }, function(err) {
+      if (err) {
+        reject(err);
       } else {
-        cb();
+        resolve();
       }
     });
+  });
+};
+
+/**
+ * Clone the given repository
+ */
+
+function cloneRepo(repo, options) {
+  var opts = Object.assign({cwd: process.cwd(), maxBuffer: 204800}, options);
+  return getArgs(Object.assign({}, opts, {repo: repo}))
+    .then(function(args) {
+      return new Promise(function(resolve, reject) {
+        spawn('git', args, opts, function(err, stdout, stderr) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(stdout, stderr);
+          }
+        });
+      });
+    });
+}
+
+function arrayify(val) {
+  return val ? (Array.isArray(val) ? val : [val]) : [];
 }
 
 /**
