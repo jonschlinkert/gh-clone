@@ -1,6 +1,8 @@
-# gh-clone [![NPM version](https://img.shields.io/npm/v/gh-clone.svg?style=flat)](https://www.npmjs.com/package/gh-clone) [![NPM downloads](https://img.shields.io/npm/dm/gh-clone.svg?style=flat)](https://npmjs.org/package/gh-clone) [![Build Status](https://img.shields.io/travis/jonschlinkert/gh-clone.svg?style=flat)](https://travis-ci.org/jonschlinkert/gh-clone)
+# gh-clone [![NPM version](https://img.shields.io/npm/v/gh-clone.svg?style=flat)](https://www.npmjs.com/package/gh-clone) [![NPM monthly downloads](https://img.shields.io/npm/dm/gh-clone.svg?style=flat)](https://npmjs.org/package/gh-clone) [![NPM total downloads](https://img.shields.io/npm/dt/gh-clone.svg?style=flat)](https://npmjs.org/package/gh-clone) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/gh-clone.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/gh-clone)
 
-git clone a repo with only username/repo, or if it's an NPM package you can use just the name of the project.
+> git clone a repo with only username/repo, or if it's an NPM package you can use just the name of the project.
+
+Follow this project's author, [Jon Schlinkert](https://github.com/jonschlinkert), for updates on this project and others.
 
 ## Install
 
@@ -15,34 +17,43 @@ $ npm install --global gh-clone
 Clone a github repository:
 
 ```sh
-$ gh-clone [owner/repo] <commands>
+$ gh-clone <repo> [options]
 ```
 
+* `repo` - one or more space-separated repository names
+* `options` [options](#options) flags to pass to `gh-clone`
+
 ### Examples
+
+**repository name**
+
+If the repository is a NPM package, you can pass the name only, and `gh-clone` will resolve the git URL from the library's `package.json`:
+
+```sh
+$ gh-clone isobject
+```
 
 **owner/repo**
 
 Pass the github repository formatted as `owner/repo`:
 
 ```sh
-$ gh-clone jonschlinkert/micromatch
+$ gh-clone jonschlinkert/isobject
 ```
 
-**repo only**
+## Options
 
-If the it's an NPM package, you can pass the repository name only, and `gh-clone` will resolve the git url from the lib's `package.json`:
+| **Shortcut** | **Flag** | **Description** | 
+| --- | --- | --- |
+| `-c` | `--cwd` | the current working directory (defaults to `process.cwd()`) |
+| `-d` | `--dest` | the local destination directory to clone the repository to |
+| `-b` | `--branch` | the branch to clone |
 
-```sh
-$ gh-clone generate
-```
+Note that if the `--dest` flag is used when cloning multiple repositories, the name of each repository will be appended to the dest value.
 
-### flags
+### Examples
 
-* `-r`|`--repo`: the repository to clone
-* `-b`|`--branch`: the branch to clone
-* `-d`|`--dest`: the local destination
-
-**Example: branch**
+**branch**
 
 Flags can be used in any order. If you want the `dev` branch of micromatch (when one exists):
 
@@ -50,7 +61,7 @@ Flags can be used in any order. If you want the `dev` branch of micromatch (when
 $ gh-clone jonschlinker/micromatch -b dev
 ```
 
-**Example: destination**
+**destination**
 
 If you want to save to the `foo` directory
 
@@ -58,7 +69,7 @@ If you want to save to the `foo` directory
 $ gh-clone jonschlinker/micromatch -d foo
 ```
 
-**Example: branch and destination**
+**branch and destination**
 
 If you want to save the `dev` branch to the `foo` directory
 
@@ -68,58 +79,92 @@ $ gh-clone jonschlinker/micromatch -b dev -d foo
 
 ## API Usage
 
-```js
-var clone = require('gh-clone');
-```
+### [clone](index.js#L31)
 
-### [clone](index.js#L24)
-
-Clone a repo with the given options:
+Clone one or more repositories with the given options.
 
 **Params**
 
-* `options` **{Object}**: Options
-* `repo` **{String}**: Repository to clone.
-* `branch` **{String}**: Branch on repository to clone.
-* `dest` **{String}**: Destination folder to clone to.
-* `cb` **{Function}**: Callback
+* `repos` **{String|Array}**
+* `options` **{Object}**
+* `callback` **{Function}**: Optional, returns a promise if the callback is not passed.
+* `returns` **{Promise}**: if a callback is not passed.
 
 **Example**
 
 ```js
-clone({repo: 'jonschlinkert/micromatch'}, function(err) {
-  if (err) return console.error(err);
+var clone = require('gh-clone');
+clone('kind-of', function(err) {
+  if (err) console.error(err);
 });
+
+// or
+clone(['isobject', 'kind-of'])
+  .then(function() {
+    // do stuff
+  })
+  .catch(console.error)
+```
+
+### [.promise](index.js#L76)
+
+Called by the main export when a callback is not passed.
+
+**Params**
+
+* `repos` **{String|Array}**
+* `options` **{Object}**
+* `returns` **{Promise}**
+
+**Example**
+
+```js
+clone.promise(['isobject', 'kind-of'])
+  .then(function() {
+    // do stuff
+  })
+  .catch(console.error)
 ```
 
 ## About
 
 ### Related projects
 
+You might also be interested in these projects:
+
 * [first-commit-date](https://www.npmjs.com/package/first-commit-date): Returns a JavaScript date object with the date and time of a git repository's first… [more](https://github.com/jonschlinkert/first-commit-date) | [homepage](https://github.com/jonschlinkert/first-commit-date "Returns a JavaScript date object with the date and time of a git repository's first commit.")
 * [get-first-commit](https://www.npmjs.com/package/get-first-commit): Returns a git repository's first commit as a JavaScript object. | [homepage](https://github.com/jonschlinkert/get-first-commit "Returns a git repository's first commit as a JavaScript object.")
-* [github-base](https://www.npmjs.com/package/github-base): Base methods for creating node.js apps that work with the GitHub API. | [homepage](https://github.com/jonschlinkert/github-base "Base methods for creating node.js apps that work with the GitHub API.")
+* [github-base](https://www.npmjs.com/package/github-base): JavaScript wrapper that greatly simplifies working with GitHub's API. | [homepage](https://github.com/jonschlinkert/github-base "JavaScript wrapper that greatly simplifies working with GitHub's API.")
 
 ### Contributing
 
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
 
+### Contributors
+
+| **Commits** | **Contributor** | 
+| --- | --- |
+| 23 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 12 | [doowb](https://github.com/doowb) |
+| 1 | [johnotander](https://github.com/johnotander) |
+| 1 | [theuves](https://github.com/theuves) |
+
 ### Building docs
 
-_(This document was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme) (a [verb](https://github.com/verbose/verb) generator), please don't edit the readme directly. Any changes to the readme must be made in [.verb.md](.verb.md).)_
+_(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
 
-To generate the readme and API documentation with [verb](https://github.com/verbose/verb):
+To generate the readme, run the following command:
 
 ```sh
-$ npm install -g verb verb-generate-readme && verb
+$ npm install -g verbose/verb#dev verb-generate-readme && verb
 ```
 
 ### Running tests
 
-Install dev dependencies:
+Running and reviewing unit tests is a great way to get familiarized with a library and its API. You can install dependencies and run tests with the following command:
 
 ```sh
-$ npm install -d && npm test
+$ npm install && npm test
 ```
 
 ### Author
@@ -127,13 +172,13 @@ $ npm install -d && npm test
 **Jon Schlinkert**
 
 * [github/jonschlinkert](https://github.com/jonschlinkert)
-* [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
+* [twitter/jonschlinkert](https://twitter.com/jonschlinkert)
 
 ### License
 
-Copyright © 2016, [Jon Schlinkert](http://github.com/jonschlinkert).
-Released under the [MIT license](https://github.com/jonschlinkert/gh-clone/blob/master/LICENSE).
+Copyright © 2017, [Jon Schlinkert](http://github.com/jonschlinkert).
+Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb](https://github.com/verbose/verb), v0.9.0, on July 23, 2016._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on September 13, 2017._
