@@ -1,23 +1,22 @@
 'use strict';
 
 require('mocha');
-var fs = require('fs');
-var util = require('util');
-var path = require('path');
-var del = require('delete');
-var assert = require('assert');
-var mkdir = util.promisify(fs.mkdir);
-var stat = util.promisify(fs.stat);
-var clone = require('../');
+const fs = require('fs');
+const util = require('util');
+const path = require('path');
+const del = require('delete');
+const assert = require('assert');
+const stat = util.promisify(fs.stat);
+const clone = require('../');
 
-var actual = path.resolve.bind(path, __dirname, 'actual');
-var cwd = process.cwd();
+const actual = path.resolve.bind(path, __dirname, 'actual');
+const cwd = process.cwd();
 process.on('exit', function() {
   process.chdir(cwd);
 });
 
 function exists(name) {
-  var dir = actual(name);
+  const dir = actual(name);
 
   return function() {
     return stat(dir)
@@ -56,18 +55,18 @@ describe('gh-clone', function() {
         .then(function() {
           cb();
         })
-        .catch(cb)
-    })
+        .catch(cb);
+    });
   });
 
   it('should clone a repo with a specified org/repo', function() {
     return clone('jonschlinkert/isobject', {cwd: actual(), silent: true})
-      .then(exists('isobject'))
+      .then(exists('isobject'));
   });
 
   it('should clone a repo when specified on options.repo', function() {
     return clone({repo: 'jonschlinkert/isobject', cwd: actual(), silent: true})
-      .then(exists('isobject'))
+      .then(exists('isobject'));
   });
 
   it('should clone a repo by just the repo name', function() {
@@ -78,7 +77,7 @@ describe('gh-clone', function() {
   it('should clone multiple repos', function() {
     return clone(['isobject', 'kind-of'], {cwd: actual(), silent: true})
       .then(exists('isobject'))
-      .then(exists('kind-of'))
+      .then(exists('kind-of'));
   });
 
   it('should clone a specified branch', function() {

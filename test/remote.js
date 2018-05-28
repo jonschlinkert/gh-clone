@@ -1,19 +1,24 @@
 'use strict';
 
 require('mocha');
-var assert = require('assert');
-var remote = require('../lib/remote');
+const path = require('path');
+const assert = require('assert');
+const remote = require('../lib/remote');
+const del = require('delete');
+const actual = path.resolve.bind(path, __dirname, 'actual');
 
 describe('remote URL', function() {
+  afterEach(() => del(actual()));
+
   it('should throw an error when invalid', function() {
     return remote()
       .catch(function(err) {
         assert(err);
-      })
+      });
   });
 
   it('should return a formatted remote URL', function() {
-    var fixture = 'https://github.com/jonschlinkert/isobject.git';
+    const fixture = 'https://github.com/jonschlinkert/isobject.git';
     return remote(fixture)
       .then(function(res) {
         assert.equal(res, fixture);
