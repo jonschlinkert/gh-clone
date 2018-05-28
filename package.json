@@ -34,19 +34,17 @@
   },
   "dependencies": {
     "any-shell-escape": "^0.1.1",
-    "cross-spawn": "^5.1.0",
-    "each-series-async": "^1.0.1",
-    "get-repository-url": "^0.1.1",
+    "cross-spawn": "^6.0.5",
+    "get-repository-url": "^2.0.0",
     "is-git-url": "^1.0.0",
-    "isobject": "^3.0.1",
     "log-ok": "^0.1.1",
     "minimist": "^1.2.0",
     "once": "^1.4.0"
   },
   "devDependencies": {
-    "mocha": "^3.5.3",
     "delete": "^1.1.0",
-    "gulp-format-md": "^1.0.0"
+    "gulp-format-md": "^1.0.0",
+    "mocha": "^5.2.0"
   },
   "keywords": [
     "clone",
